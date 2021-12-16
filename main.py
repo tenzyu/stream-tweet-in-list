@@ -44,7 +44,6 @@ class MiiTweet:
         return set(map(lambda member: member.id, members))
 
     def update_list_status(self) -> bool:
-        print("called update_list_status")
         new_member_ids = self.get_list_member_ids()
         if new_member_ids != self.member_ids:
             self.member_ids = new_member_ids
