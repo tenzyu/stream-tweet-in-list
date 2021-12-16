@@ -1,0 +1,7 @@
+tweepy
+python-dotenv
+requests
+
+pylint
+black
+isort
