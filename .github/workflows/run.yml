@@ -18,6 +18,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: test
+        run: |
+          echo $env.DIR_NAME
+          echo $env[DIR_NAME]
+          echo $env["DIR_NAME"]
+
       - name: Prepare SSH Private Key
         run: echo "$env["PRIVATE_KEY"]" > pkey && chmod 600 pkey
 
