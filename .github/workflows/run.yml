@@ -18,7 +18,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name : test
-          run : echo $REMOTE_HOST
+        run : echo $REMOTE_HOST
+        
       - name: Prepare SSH Private Key
         run: echo "$PRIVATE_KEY" > pkey && chmod 600 pkey
 
