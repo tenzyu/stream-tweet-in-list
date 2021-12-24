@@ -1,0 +1,38 @@
+name: Run on VPS
+
+on:
+  push:
+    branches: [main]
+
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      PRIVATE_KEY: ${{ secrets.PRIVATE_KEY}}
+      REMOTE_HOST: ${{ secrets.REMOTE_HOST}}
+      REMOTE_USER: ${{ secrets.REMOTE_USER}}
+      REMOTE_PORT: ${{ secrets.REMOTE_PORT}}
+      DIR_NAME: stream-tweet-in-list
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Prepare SSH Private Key
+        run: echo "$env.PKEY" > pkey && chmod 600 pkey
+
+      - name: Deploy
+        run: ssh $env.REMOTE_USER@env.REMOTE_HOST -p $env.REMOTE_PORT -i pkey \
+          "\
+          cd $env.DIR_NAME && \
+          git pull \
+          "
+
+      - name: Restart Docker Compose
+        run: ssh $env.REMOTE_USER@$env.REMOTE_HOST -p $env.REMOTE_PORT -i pkey \
+          "\
+          cd /home/$env.REMOTE_USER/stream-tweet-in-list && \
+          docker-compose build --pull && \
+          docker-compose down -v && \
+          docker-compose up -d \
+          "
