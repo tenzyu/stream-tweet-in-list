@@ -27,7 +27,7 @@ jobs:
           PKEY: ${{ secrets.DEPLOY_SERVER_PRIVATE_KEY }}
         
       - name: Restart Docker Compose
-        run: ssh $USER@$HOST -p $PORT -i pkey touch test
+        run: ssh $USER@$HOST -p $PORT -i pkey cd /home/$USER/stream-tweet-in-list && touch test
         env:
           HOST: ${{ secrets.DEPLOY_SERVER_HOST }}
           USER: ${{ secrets.DEPLOY_SERVER_USER }}
