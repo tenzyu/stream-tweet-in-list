@@ -18,14 +18,17 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Prepare SSH Private Key
-        run: echo "$PRIVATE_KEY" >> pkey && chmod 600 pkey
+      - name: Prepare SSH
+        run: |
+        mkdir -p /home/runner/.ssh
+        echo "$PRIVATE_KEY" > ~/.ssh/private_key && chmod 600 ~/.ssh/private_key
+        ssh-keyscan $REMOTE_HOST -p $REMOTE_PORT > ~/.ssh/known_hosts
 
       - name: Deploy to VPS
-        run: ssh $REMOTE_USER@$REMOTE_HOST -p $REMOTE_PORT -i pkey "cd $DIR_NAME && git pull"
+        run: ssh $REMOTE_USER@$REMOTE_HOST -p $REMOTE_PORT -i ~/.ssh/pkey "cd $DIR_NAME && git pull"
 
       - name: Restart Docker Compose
-        run: ssh $REMOTE_USER@$REMOTE_HOST -p $REMOTE_PORT -i pkey \
+        run: ssh $REMOTE_USER@$REMOTE_HOST -p $REMOTE_PORT -i ~/.ssh/pkey \
           "\
           cd $DIR_NAME && \
           docker-compose build --pull && \
