@@ -24,7 +24,7 @@ jobs:
           ssh-keyscan -p $REMOTE_PORT $REMOTE_HOST > ~/.ssh/known_hosts
 
       - name: Deploy to VPS
-        run: rsync -ahvn -e "ssh -o StrictHostKeyChecking=no -p $REMOTE_PORT -i ~/.ssh/key" $GITHUB_WORKSPACE $REMOTE_USER@$REMOTE_HOST
+        run: rsync -rltgoDzvO -e "ssh -o StrictHostKeyChecking=no -p $REMOTE_PORT -i ~/.ssh/key" $GITHUB_WORKSPACE $REMOTE_USER@$REMOTE_HOST:/home/$REMOTE_USER/
 
       - name: Restart Docker Compose
         run: ssh $REMOTE_USER@$REMOTE_HOST -p $REMOTE_PORT -i ~/.ssh/key "cd $DIR_NAME && docker-compose build --pull && docker-compose down -v && docker-compose up -d"
