@@ -17,7 +17,8 @@ jobs:
       DIR_NAME: stream-tweet-in-list
     steps:
       - uses: actions/checkout@v2
-
+      - name : test
+          run : echo $REMOTE_HOST
       - name: Prepare SSH Private Key
         run: echo "$PRIVATE_KEY" > pkey && chmod 600 pkey
 
