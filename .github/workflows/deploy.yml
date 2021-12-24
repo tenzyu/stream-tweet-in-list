@@ -20,17 +20,15 @@ jobs:
             REMOTE_USER: ${{ secrets.DEPLOY_SERVER_USER }}
             REMOTE_PORT: ${{ secrets.REMOTE_PORT }}
             TARGET: /home/${{ secrets.DEPLOY_SERVER_USER }}/stream-tweet-in-list
-
+      
+      - name: Generate SSH key
+        run: echo "$PKEY" > pkey && chmod 600 pkey
+        env:
+          PKEY: ${{ secrets.DEPLOY_SERVER_PRIVATE_KEY }}
+        
       - name: Restart Docker Compose
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.DEPLOY_SERVER_HOST }}
-          username: ${{ secrets.DEPLOY_SERVER_USER }}
-          port: ${{ secrets.REMOTE_PORT }}
-          key: ${{ secrets.DEPLOY_SERVER_PRIVATE_KEY }}
-          script_stop: true
-          script: |
-            cd /home/${{ secrets.DEPLOY_SERVER_USER }}/stream-tweet-in-list
-            docker-compose build --pull
-            docker-compose down -v
-            docker-compose up -d
+        run: ssh $USER@$HOST -p $PORT -i pkey "cd /home/$USER/stream-tweet-in-list $$ docker-compose build --pull $$ docker-compose down -v $$ docker-compose up -d"
+        env:
+          HOST: ${{ secrets.DEPLOY_SERVER_HOST }}
+          USER: ${{ secrets.DEPLOY_SERVER_USER }}
+          PORT: ${{ secrets.REMOTE_PORT }}
