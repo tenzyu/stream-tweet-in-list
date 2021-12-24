@@ -22,7 +22,7 @@ jobs:
         run: |
           mkdir -p /home/runner/.ssh
           echo "$PRIVATE_KEY" > ~/.ssh/private_key && chmod 600 ~/.ssh/private_key
-          ssh-keyscan $REMOTE_HOST -p $REMOTE_PORT > ~/.ssh/known_hosts
+          ssh-keyscan -p $REMOTE_PORT $REMOTE_HOST > ~/.ssh/known_hosts
 
       - name: Deploy to VPS
         run: ssh $REMOTE_USER@$REMOTE_HOST -p $REMOTE_PORT -i ~/.ssh/pkey "cd $DIR_NAME && git pull"
