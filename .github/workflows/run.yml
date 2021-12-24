@@ -24,16 +24,13 @@ jobs:
           ssh-keyscan -p $REMOTE_PORT $REMOTE_HOST > ~/.ssh/known_hosts
 
       - name: Deploy to VPS
-        run: rsync -rltgoDzvO --delete --port=$REMOTE_PORT \
-          -e "ssh -o StrictHostKeyChecking=no -p $REMOTE_PORT -i ~/.ssh/key" \
-          $GITHUB_WORKSPACE \
-          $REMOTE_USER@$REMOTE_HOST:.
-
+        run: rsync -rltgoDzvO --delete -e "ssh -o StrictHostKeyChecking=no -p $REMOTE_PORT -i ~/.ssh/key" $GITHUB_WORKSPACE $REMOTE_USER@$REMOTE_HOST
         # run: ssh $REMOTE_USER@$REMOTE_HOST -p $REMOTE_PORT -i ~/.ssh/key \
         #   "\
         #   cd $DIR_NAME && \
         #   git pull \
         #   "
+        
       - name: Restart Docker Compose
         run: ssh $REMOTE_USER@$REMOTE_HOST -p $REMOTE_PORT -i ~/.ssh/key \
           "\
