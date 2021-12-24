@@ -26,7 +26,7 @@ jobs:
         run: rsync \
           -rltgoDzvO \
           --delete \
-          -e "ssh -p {$REMOTE_PORT} -i ~/.ssh/key" \
+          -e "ssh -p ${REMOTE_PORT} -i ~/.ssh/key" \
           $GITHUB_WORKSPACE \
           $REMOTE_USER@$REMOTE_HOST:$DIR_NAME
 
