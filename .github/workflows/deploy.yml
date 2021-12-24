@@ -27,7 +27,7 @@ jobs:
           PKEY: ${{ secrets.DEPLOY_SERVER_PRIVATE_KEY }}
         
       - name: Restart Docker Compose
-        run: ssh $USER@$HOST -p $PORT -i pkey "cd /home/$USER/stream-tweet-in-list $$ docker-compose build --pull $$ docker-compose down -v $$ docker-compose up -d"
+        run: ssh $USER@$HOST -p $PORT -i pkey && echo success
         env:
           HOST: ${{ secrets.DEPLOY_SERVER_HOST }}
           USER: ${{ secrets.DEPLOY_SERVER_USER }}
