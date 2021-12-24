@@ -24,7 +24,7 @@ jobs:
           ssh-keyscan -p $REMOTE_PORT $REMOTE_HOST > ~/.ssh/known_hosts
 
       - name: Deploy to VPS
-        run: rsync -rltgoDzvO --delete \
+        run: rsync -rltgoDzvO --delete --port=$REMOTE_PORT \
           -e "ssh -o StrictHostKeyChecking=no -p $REMOTE_PORT -i ~/.ssh/key" \
           $GITHUB_WORKSPACE \
           $REMOTE_USER@$REMOTE_HOST:.
