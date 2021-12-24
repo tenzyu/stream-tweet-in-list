@@ -28,6 +28,7 @@ jobs:
           username: ${{ secrets.DEPLOY_SERVER_USER }}
           port: ${{ secrets.REMOTE_PORT }}
           key: ${{ secrets.DEPLOY_SERVER_PRIVATE_KEY }}
+          script_stop: true
           script: |
             cd /home/${{ secrets.DEPLOY_SERVER_USER }}/stream-tweet-in-list
             docker-compose build --pull
